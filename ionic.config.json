@@ -1,0 +1,8 @@
+{
+  "name": "ionic-form-offline",
+  "app_id": "5bfc5af3",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

@@ -1,14 +1,16 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+          Offline Form
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <div text-center>
+    <button ion-button (click)="goToFirebaseList()">List of uploaded Data</button>
+    <button ion-button (click)="goToForm()">Appointment Form</button>
+    <button ion-button (click)="goToOfflineList()">List of data not uploaded</button>
+  </div>
+
 </ion-content>

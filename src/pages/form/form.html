@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>
+        Appointment Form
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="validationForm">
+      <ion-list>
+          <ion-item>
+              <!-- <ion-label>First Name</ion-label> -->
+                    <ion-input placeholder="First Name" type="text" formControlName="firstName"></ion-input>  
+            </ion-item>
+                <div text-center *ngIf="validationForm.controls.firstName.invalid && validationForm.controls.firstName.dirty">
+                  Please enter a valid first name.
+                </div>
+          <ion-item>
+            <!-- <ion-label>Last Name</ion-label> -->
+            <ion-input placeholder="Last Name (Optional)" type="text" formControlName="lastName"></ion-input>
+          </ion-item>
+          <div text-center *ngIf="validationForm.controls.lastName.invalid && validationForm.controls.lastName.dirty">
+              Please enter a valid last name.
+            </div>
+            <ion-item>
+                <ion-label>Age/DOB</ion-label>
+                <ion-toggle (ionChange)="ageDob($event)"></ion-toggle>
+            </ion-item>
+            <ion-item *ngIf="eventFromAgeDob">
+                <!-- <ion-label>Age</ion-label> -->
+                <ion-input (ionChange)="ageValue($event)" placeholder="Age" type="number" formControlName="age"></ion-input>
+            </ion-item>
+            
+            <div text-center *ngIf="eventFromAgeDob && validationForm.controls.age.invalid && validationForm.controls.age.dirty">
+                Please enter age between 1-99.
+              </div>
+            <ion-item *ngIf="!eventFromAgeDob">
+                <!-- <ion-label>DOB</ion-label> -->
+                <ion-datetime placeholder="DOB" (ionChange)="returnDOB($event)" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [max]="maxDate()" formControlName="dob"></ion-datetime>
+            </ion-item>
+            <div text-center *ngIf="(!eventFromAgeDob) && validationForm.controls.dob.invalid && validationForm.controls.dob.dirty">
+                Please provide a valid DOB.
+              </div>
+              <p *ngIf="currentAge">Current Age: {{currentAge}}</p>
+            <ion-item>
+                <!-- <ion-label>Email</ion-label> -->
+                <ion-input placeholder="Email" type="text" formControlName="email"></ion-input>
+            </ion-item>
+            <div text-center *ngIf="validationForm.controls.email.invalid && validationForm.controls.email.dirty">
+                Please provide a Email.
+              </div>
+            <ion-item>
+                <!-- <ion-label>Password</ion-label> -->
+                <ion-input placeholder="Password" (ionChange)="password($event)" [type]="passwordType" formControlName="password"></ion-input>
+            </ion-item>
+            <div text-center>
+                <a (click) = "togglePasswordType()">{{showHidePasswordIcon}}</a>
+            </div>
+            <!-- <ion-icon item-end [name]="showHidePasswordIcon" (click) = "togglePasswordType()"></ion-icon> -->
+            <div text-center *ngIf="validationForm.controls.password.invalid && validationForm.controls.password.dirty">
+                Password Error.
+            </div>
+            <ion-item>
+                <!-- <ion-label>Repeat Password</ion-label> -->
+                <ion-input placeholder="Repeat Password" type="password" (ionChange)="confirmPassword($event)" [disabled]="repeatPasswordState" formControlName="repeatPassword"></ion-input>
+            </ion-item>
+            <div *ngIf="error" text-center>{{error}}</div>
+            <!-- <div *ngIf="(validationForm.controls.password.invalid && validationForm.controls.password.dirty)" text-center>Please provide a valid password.</div> -->
+            <ion-item>
+                <ion-label>Country Code</ion-label>
+              <ion-select formControlName="countryCode">
+                  <ion-option *ngFor="let country of Countrylist" [value]="country.callingCodes" >{{country.name}}</ion-option>
+                  <!-- ***INTENTIONALLY BLOCKED***- <ion-option *ngFor="let itemz of Countrylist" [value] = "itemz.callingCodes" >(+{{itemz.callingCodes}}) {{itemz.name}} </ion-option> -->
+              </ion-select>
+            </ion-item>
+            <ion-item>
+                    <!-- <ion-label>Phone No</ion-label> -->
+                    <!-- <ion-searchbar placeholder="Country Code" type="text" formControlName="countryCode"></ion-searchbar> -->
+                    <!-- <ion-input placeholder="Country Code" type="text" formControlName="countryCode"></ion-input> -->
+                    
+                    <ion-input placeholder="Phone Number" type="number" formControlName="phoneNo"></ion-input>
+            </ion-item>
+            <div text-center *ngIf="validationForm.controls.countryCode.invalid && validationForm.controls.countryCode.dirty&&validationForm.controls.phoneNo.invalid && validationForm.controls.phoneNo.dirty">
+                Please provide both country code and phone number.
+            </div>
+            <ion-item>
+                <ion-label>Registering For</ion-label>
+                <ion-select required  formControlName="registeringFor">
+                    <ion-option value="self">Self</ion-option>
+                    <ion-option value="mother">Mother</ion-option>
+                    <ion-option value="father">Father</ion-option>
+                    <ion-option value="wife">Wife</ion-option>
+                    <ion-option value="grand parent">Grand Parent</ion-option>
+                    <ion-option value="child">Child</ion-option>
+                    <ion-option value="other">Other</ion-option>   
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Symptoms</ion-label>
+                <ion-select multiple required formControlName="symptoms">
+                    <ion-option value="allergy">Allergy</ion-option>
+                    <ion-option value="fever">Fever</ion-option>
+                    <ion-option value="cough">Cough</ion-option>
+                    <ion-option value="weakness">Weakness</ion-option>
+                    <ion-option value="bodypain">Bodypain</ion-option>
+                </ion-select>
+            </ion-item>
+        <!-- <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionChange)="onSearchInput()"></ion-searchbar>
+            <ion-item *ngFor="let item of items">
+                {{item.name}} 
+              </ion-item> -->
+
+              <!-- <ion-input type="text" placeholder="Country Name" [value]="countryCode" formControlName="countryname" (ionChange)="showCountry()"></ion-input> -->
+                  <!-- <div [hidden]="flag" id="country">
+                    <span (click)="getCountry($event.target.innerHTML)" *ngFor="let country of items">
+                      <img src="{{ country.flag }}" height="15" width="20"/> {{ country.callingCodes }} {{ country.name }} <br/>
+                    </span>
+                  </div> -->
+              
+          </ion-list>
+        
+            
+          <div padding>
+            <button ion-button color="primary" [disabled]="submitDisabled" (click)="submit()"  block>Submit</button>
+            <!-- [disabled]="" (click)="submit()" -->
+          </div>
+          <div *ngIf="errorArray">
+              <ul>
+                  <li *ngFor="let error of errorArray">{{error}}</li>
+              </ul>
+
+          </div>
+      </form>
+</ion-content>

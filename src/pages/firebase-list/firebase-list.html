@@ -1,0 +1,33 @@
+<!--
+  Generated template for the FirebaseListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title text-center>Firebase List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+        <div *ngFor="let item of sampleArray; let i = index;">
+          <ion-label>Item No: {{i+1}}</ion-label>
+          <!-- <ion-label>Saved On:{{item.currentTime}}</ion-label> -->
+          <ion-label>Name: {{item.firstName}} {{item.lastName}}</ion-label>
+          <p>Email: {{item.email}}</p>
+          <p>Phone: +{{item.countryCode}}-{{item.phoneNo}}</p>
+          <p *ngIf="isDOB">DOB: {{item.dob}}</p>
+          <p *ngIf="isAge">Age: {{item.age}}</p>
+          <p>Registering For: {{item.registeringFor}}</p>
+          <p>Symptoms: {{item.symptoms}}</p>
+    
+           <br>
+           <br>
+        </div>
+      </ion-list>
+</ion-content>
